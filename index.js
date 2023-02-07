@@ -47,6 +47,18 @@ app.put('/api/genres/:id', (req, res) => {
 })
 
 // delete methods
+app.delete('/api/genres/:id', (req, res) => {
+  const id = req.params.id
+
+  let targetGenre = genres.find((e) => e.id.toString() === id.toString())
+  if (!targetGenre)
+    return res.status(404).send('Genre with the given id does not exist.')
+
+  const index = genres.indexOf(targetGenre)
+  genres.splice(index, 1)
+
+  res.send(targetGenre)
+})
 
 const port = process.env.PORT || 8000
 app.listen(port, () => console.log(`Listening on port ${port} ...`))
