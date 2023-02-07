@@ -14,6 +14,16 @@ app.get('/api/genres', (req, res) => {
   res.send(genres)
 })
 
+app.get('/api/genres/:id', (req, res) => {
+  const id = req.params.id
+
+  let targetGenre = genres.find((e) => e.id.toString() === id.toString())
+  if (!targetGenre)
+    return res.status(404).send('Genre with the given id does not exist.')
+
+  res.send(targetGenre)
+})
+
 // post methods
 app.post('/api/genres', (req, res) => {
   const { valid, message } = checkGenreSchema(req.body)
