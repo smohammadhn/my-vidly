@@ -32,6 +32,20 @@ app.post('/api/genres', (req, res) => {
 })
 
 // put methods
+app.put('/api/genres/:id', (req, res) => {
+  const id = req.params.id
+
+  let targetGenre = genres.find((e) => e.id.toString() === id.toString())
+  if (!targetGenre)
+    return res.status(404).send('Genre with the given id does not exist.')
+
+  const { valid, message } = checkGenreSchema(req.body)
+  if (!valid) return res.status(400).send(message)
+
+  targetGenre = Object.assign(targetGenre, req.body)
+  res.send(targetGenre)
+})
+
 // delete methods
 
 const port = process.env.PORT || 8000

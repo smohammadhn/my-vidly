@@ -6,7 +6,6 @@ module.exports = {
       name: Joi.string().required().min(3),
     })
 
-    console.log(schema.validate(genre))
     const { error } = schema.validate(genre)
 
     return {
