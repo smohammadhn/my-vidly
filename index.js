@@ -1,9 +1,11 @@
 const express = require('express')
 const { checkGenreSchema } = require('./validators')
 const genres = require('./genres')
+const logger = require('./middlewares/logger')
 const app = express()
 
 app.use(express.json())
+app.use(logger)
 
 // get methods
 app.get('/', (req, res) => {
