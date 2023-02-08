@@ -1,17 +1,32 @@
-const helmet = require('helmet')
-const morgan = require('morgan')
+// enable usage of .env file for environment variables
+require('dotenv').config({ path: __dirname + '/.env' })
+
+// initialize express module
 const express = require('express')
-const { checkGenreSchema } = require('./validators')
-const genres = require('./genres')
-const logger = require('./middlewares/logger')
 const app = express()
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+// express built-in middlewares
+// STATIC: enable /static folder to be shown at domain:port/somethingInsideStaticFolder
 app.use(express.static('public'))
+
+// JSON: if the body of the incoming request contains a JSON object, it populates req.body
+app.use(express.json())
+
+// URLENCODED: parses incoming requests with urlencoded payloads and is based on body-parser (eg. requests using html forms)
+app.use(express.urlencoded({ extended: true }))
+
+// other useful packages:
+// HELMET: adds additional headers to api headers (best-practice)
+const helmet = require('helmet')
 app.use(helmet())
+
+// MORGAN: logging api requests
+const morgan = require('morgan')
 app.use(morgan('tiny'))
-app.use(logger)
+
+// other misc imports
+const { checkGenreSchema } = require(__dirname + '/helpers/validators')
+const genres = require(__dirname + '/testData/genres')
 
 // get methods
 app.get('/', (req, res) => {
