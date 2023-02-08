@@ -26,6 +26,9 @@ app.use(helmet())
 const morgan = require('morgan')
 app.use(morgan('tiny'))
 
+// CONFIG: getting and setting global configuration for the project
+const config = require('config')
+
 // other misc imports
 const { checkGenreSchema, checkEnvironmentVariables } = require(__dirname +
   '/helpers/validators')
@@ -106,9 +109,9 @@ app.delete('/api/genres/:id', (req, res) => {
 
 checkEnvironmentVariables()
 
-const port = process.env.PORT
+const port = config.get('port')
 app.listen(port, () => console.log(`Listening on port ${port} ...`))
 
 // -------------------------------- END: application main program --------------------------------
 
-console.log(process.env.NODE_ENV)
+console.log(config.get('name'))
