@@ -42,8 +42,8 @@ const { checkEnvironmentVariables } = require(config.get('path') +
 const home = require(config.get('path') + '/routes/home.js')
 app.use('/', home)
 
-const courses = require(config.get('path') + '/routes/courses.js')
-app.use('/api/courses', courses)
+const genres = require(config.get('path') + '/routes/genres.js')
+app.use('/api/genres', genres)
 
 // -------------------------------- END: api endpoints --------------------------------
 
