@@ -1,3 +1,5 @@
+// -------------------------------- START: imports --------------------------------
+
 // enable usage of .env file for environment variables
 require('dotenv').config({ path: __dirname + '/.env' })
 
@@ -27,6 +29,10 @@ app.use(morgan('tiny'))
 // other misc imports
 const { checkGenreSchema } = require(__dirname + '/helpers/validators')
 const genres = require(__dirname + '/testData/genres')
+
+// -------------------------------- END: imports --------------------------------
+
+// -------------------------------- START: api endpoints --------------------------------
 
 // get methods
 app.get('/', (req, res) => {
@@ -93,5 +99,11 @@ app.delete('/api/genres/:id', (req, res) => {
   res.send(targetGenre)
 })
 
+// -------------------------------- END: api endpoints --------------------------------
+
+// -------------------------------- START: application main program --------------------------------
+
 const port = process.env.PORT || 8000
 app.listen(port, () => console.log(`Listening on port ${port} ...`))
+
+// -------------------------------- END: application main program --------------------------------
