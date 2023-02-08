@@ -27,7 +27,8 @@ const morgan = require('morgan')
 app.use(morgan('tiny'))
 
 // other misc imports
-const { checkGenreSchema } = require(__dirname + '/helpers/validators')
+const { checkGenreSchema, checkEnvironmentVariables } = require(__dirname +
+  '/helpers/validators')
 const genres = require(__dirname + '/testData/genres')
 
 // -------------------------------- END: imports --------------------------------
@@ -103,7 +104,11 @@ app.delete('/api/genres/:id', (req, res) => {
 
 // -------------------------------- START: application main program --------------------------------
 
-const port = process.env.PORT || 8000
+checkEnvironmentVariables()
+
+const port = process.env.PORT
 app.listen(port, () => console.log(`Listening on port ${port} ...`))
 
 // -------------------------------- END: application main program --------------------------------
+
+console.log(process.env.NODE_ENV)
