@@ -28,80 +28,22 @@ app.use(morgan('tiny'))
 
 // CONFIG: getting and setting global configuration for the project
 const config = require('config')
+const { resolve } = require('path')
+config.path = resolve()
 
 // other misc imports
-const { checkGenreSchema, checkEnvironmentVariables } = require(__dirname +
+const { checkEnvironmentVariables } = require(config.get('path') +
   '/helpers/validators')
-const genres = require(__dirname + '/testData/genres')
 
 // -------------------------------- END: imports --------------------------------
 
 // -------------------------------- START: api endpoints --------------------------------
 
-// get methods
-app.get('/', (req, res) => {
-  res.send('Welcome to my version of Vidly')
-})
+const home = require(config.get('path') + '/routes/home.js')
+app.use('/', home)
 
-app.get('/api/genres', (req, res) => {
-  res.send(genres)
-})
-
-app.get('/api/genres/:id', (req, res) => {
-  const id = req.params.id
-
-  let targetGenre = genres.find((e) => e.id.toString() === id.toString())
-  if (!targetGenre)
-    return res.status(404).send('Genre with the given id does not exist.')
-
-  res.send(targetGenre)
-})
-
-// post methods
-app.post('/api/genres', (req, res) => {
-  const { valid, message } = checkGenreSchema(req.body)
-
-  console.log({ valid, message })
-
-  if (!valid) return res.status(400).send(message)
-
-  const newGenre = {
-    id: genres.length + 1,
-    name: req.body.name,
-  }
-
-  genres.push(newGenre)
-  res.send(newGenre)
-})
-
-// put methods
-app.put('/api/genres/:id', (req, res) => {
-  const id = req.params.id
-
-  let targetGenre = genres.find((e) => e.id.toString() === id.toString())
-  if (!targetGenre)
-    return res.status(404).send('Genre with the given id does not exist.')
-
-  const { valid, message } = checkGenreSchema(req.body)
-  if (!valid) return res.status(400).send(message)
-
-  targetGenre = Object.assign(targetGenre, req.body)
-  res.send(targetGenre)
-})
-
-// delete methods
-app.delete('/api/genres/:id', (req, res) => {
-  const id = req.params.id
-
-  let targetGenre = genres.find((e) => e.id.toString() === id.toString())
-  if (!targetGenre)
-    return res.status(404).send('Genre with the given id does not exist.')
-
-  const index = genres.indexOf(targetGenre)
-  genres.splice(index, 1)
-
-  res.send(targetGenre)
-})
+const courses = require(config.get('path') + '/routes/courses.js')
+app.use('/api/courses', courses)
 
 // -------------------------------- END: api endpoints --------------------------------
 
@@ -113,5 +55,3 @@ const port = config.get('port')
 app.listen(port, () => console.log(`Listening on port ${port} ...`))
 
 // -------------------------------- END: application main program --------------------------------
-
-console.log(config.get('name'))
