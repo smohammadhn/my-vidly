@@ -77,15 +77,13 @@ router.put('/:id', (req, res) => {
 })
 
 // delete methods
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const id = req.params.id
 
-  let targetGenre = genres.find((e) => e.id.toString() === id.toString())
+  let targetGenre = await Genre.findByIdAndRemove(id)
+
   if (!targetGenre)
     return res.status(404).send('Genre with the given id does not exist.')
-
-  const index = genres.indexOf(targetGenre)
-  genres.splice(index, 1)
 
   res.send(targetGenre)
 })
