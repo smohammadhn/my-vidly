@@ -36,10 +36,11 @@ router.get('/', async (req, res) => {
   res.send(result)
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   const id = req.params.id
 
-  let targetGenre = genres.find((e) => e.id.toString() === id.toString())
+  let targetGenre = await Genre.findById(id)
+
   if (!targetGenre)
     return res.status(404).send('Genre with the given id does not exist.')
 
