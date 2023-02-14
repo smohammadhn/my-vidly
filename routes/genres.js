@@ -28,11 +28,11 @@ const genreMongooseSchema = new mongoose.Schema({
   },
 })
 
-const Genres = mongoose.model('Genres', genreMongooseSchema)
+const Genre = mongoose.model('Genres', genreMongooseSchema)
 
 // get methods
 router.get('/', async (req, res) => {
-  const result = await Genres.find()
+  const result = await Genre.find()
   res.send(result)
 })
 
@@ -47,20 +47,18 @@ router.get('/:id', (req, res) => {
 })
 
 // post methods
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { valid, message } = checkGenreSchema(req.body)
-
-  console.log({ valid, message })
 
   if (!valid) return res.status(400).send(message)
 
-  const newGenre = {
-    id: genres.length + 1,
+  const genre = new Genre({
     name: req.body.name,
-  }
+  })
 
-  genres.push(newGenre)
-  res.send(newGenre)
+  const savedGenre = await genre.save()
+
+  res.send(savedGenre)
 })
 
 // put methods
