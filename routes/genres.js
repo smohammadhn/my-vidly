@@ -1,16 +1,39 @@
 const express = require('express')
 const router = express.Router()
 const config = require('config')
-console.log(config)
+const mongoose = require('mongoose')
 
 // other misc imports
 const { checkGenreSchema } = require(config.get('path') + '/helpers/validators')
-const genres = require(config.get('path') + '/testData/genres')
+
+// initialize mongoose to work with genres mongodb database
+mongoose.set('strictQuery', false)
+mongoose
+  .connect('mongodb://localhost/genres')
+  .then(() => console.log('Success: connected to genres database'))
+  .catch(() => console.log('Failed: connection to genres database'))
+
+const genreMongooseSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'mongoose :>> genre name required'],
+
+    validate: {
+      validator: function (v) {
+        return v && v.length > 3
+      },
+
+      message: 'mongoose :>> name must be at least 3 characters long',
+    },
+  },
+})
+
+const Genres = mongoose.model('Genres', genreMongooseSchema)
 
 // get methods
-
-router.get('/', (req, res) => {
-  res.send(genres)
+router.get('/', async (req, res) => {
+  const result = await Genres.find()
+  res.send(result)
 })
 
 router.get('/:id', (req, res) => {
