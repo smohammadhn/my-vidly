@@ -17,6 +17,15 @@ app.use(express.json())
 // URLENCODED: parses incoming requests with urlencoded payloads and is based on body-parser (eg. requests using html forms)
 app.use(express.urlencoded({ extended: true }))
 
+// initialize mongoose
+const mongoose = require('mongoose')
+mongoose.set('strictQuery', false)
+mongoose.set('returnOriginal', false)
+mongoose
+  .connect('mongodb://localhost/vidly')
+  .then(() => console.log('Success: connected to genres database'))
+  .catch(() => console.log('Failed: connection to genres database'))
+
 // other useful packages:
 // HELMET: adds additional headers to api headers (best-practice)
 const helmet = require('helmet')

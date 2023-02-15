@@ -4,7 +4,7 @@ module.exports = {
   // validate user request body
   checkGenreSchema(genre) {
     const schema = Joi.object({
-      name: Joi.string().required().min(3),
+      name: Joi.string().required().min(3).max(30),
     })
 
     const { error } = schema.validate(genre)
