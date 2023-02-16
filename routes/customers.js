@@ -78,4 +78,15 @@ router.put('/:id', async (req, res) => {
     .catch((err) => res.status(500).send(err.message))
 })
 
+// delete method
+router.delete('/:id', async (req, res) => {
+  await Customer.findByIdAndRemove(req.params.id)
+    .then((customer) => {
+      if (!customer)
+        res.status(404).send('customer with the given id not found!')
+      else res.send(customer)
+    })
+    .catch((err) => res.status(500).send(err.message))
+})
+
 module.exports = router
