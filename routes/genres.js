@@ -1,22 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const config = require('config')
-const mongoose = require('mongoose')
 
 // other misc imports
-const { checkGenreSchema } = require(config.get('path') + '/helpers/validators')
-
-const Genre = mongoose.model(
-  'Genres',
-  new mongoose.Schema({
-    name: {
-      type: String,
-      required: [true, 'mongoose :>> genre name required'],
-      minLength: 3,
-      maxLength: 30,
-    },
-  })
-)
+const { Genre, validate } = require(config.get('path') + '/models/genres')
 
 // get methods
 router.get('/', async (req, res) => {
@@ -40,7 +27,7 @@ router.get('/:id', async (req, res) => {
 
 // post methods
 router.post('/', async (req, res) => {
-  const { valid, message } = checkGenreSchema(req.body)
+  const { valid, message } = validate(req.body)
   if (!valid) return res.status(400).send(message)
 
   const genre = new Genre({
@@ -57,7 +44,7 @@ router.post('/', async (req, res) => {
 
 // put methods
 router.put('/:id', async (req, res) => {
-  const { valid, message } = checkGenreSchema(req.body)
+  const { valid, message } = validate(req.body)
   if (!valid) return res.status(400).send(message)
 
   await Genre.findByIdAndUpdate(req.params.id, { name: req.body.name })
