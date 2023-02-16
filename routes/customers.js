@@ -37,6 +37,12 @@ router.get('/', async (req, res) => {
   res.send(allCustomers)
 })
 
+router.get('/:id', async (req, res) => {
+  await Customer.findById(req.params.id)
+    .then((customer) => res.send(customer))
+    .catch((err) => res.status(500).send(err.message))
+})
+
 // post methods
 router.post('/', async (req, res) => {
   const { valid, message } = checkCustomerSchema(req.body)
