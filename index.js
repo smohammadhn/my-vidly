@@ -23,8 +23,8 @@ mongoose.set('strictQuery', false)
 mongoose.set('returnOriginal', false)
 mongoose
   .connect('mongodb://localhost/vidly')
-  .then(() => console.log('Success: connected to genres database'))
-  .catch(() => console.log('Failed: connection to genres database'))
+  .then(() => console.log('Success: connected to vidly database'))
+  .catch(() => console.log('Failed: connection to vidly database'))
 
 // other useful packages:
 // HELMET: adds additional headers to api headers (best-practice)
@@ -53,6 +53,9 @@ app.use('/', home)
 
 const genres = require(config.get('path') + '/routes/genres.js')
 app.use('/api/genres', genres)
+
+const customers = require(config.get('path') + '/routes/customers.js')
+app.use('/api/customers', customers)
 
 // -------------------------------- END: api endpoints --------------------------------
 
