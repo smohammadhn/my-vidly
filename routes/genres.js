@@ -50,7 +50,6 @@ router.post('/', async (req, res) => {
   await genre
     .save()
     .then((genre) => {
-      console.log(genre)
       res.send(genre)
     })
     .catch((err) => res.status(500).send(err.message))
