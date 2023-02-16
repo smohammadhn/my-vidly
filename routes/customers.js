@@ -39,11 +39,15 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   await Customer.findById(req.params.id)
-    .then((customer) => res.send(customer))
+    .then((customer) => {
+      if (!customer)
+        res.status(404).send('customer with the given id not found!')
+      else res.send(customer)
+    })
     .catch((err) => res.status(500).send(err.message))
 })
 
-// post methods
+// post method
 router.post('/', async (req, res) => {
   const { valid, message } = checkCustomerSchema(req.body)
   if (!valid) return res.status(400).send(message)
@@ -57,6 +61,20 @@ router.post('/', async (req, res) => {
   await customer
     .save()
     .then((newCustomer) => res.send(newCustomer))
+    .catch((err) => res.status(500).send(err.message))
+})
+
+// put method
+router.put('/:id', async (req, res) => {
+  const { valid, message } = checkCustomerSchema(req.body)
+  if (!valid) return res.status(400).send(message)
+
+  await Customer.findByIdAndUpdate(req.params.id, req.body)
+    .then((customer) => {
+      if (!customer)
+        res.status(404).send('customer with the given id not found!')
+      else res.send(customer)
+    })
     .catch((err) => res.status(500).send(err.message))
 })
 
