@@ -3,7 +3,8 @@ const express = require('express')
 const router = express.Router()
 const config = require('config')
 
-const { Customer, validate } = require(config.get('path') + '/models/customers')
+const { Customer, customerValidate } = require(config.get('path') +
+  '/models/customers')
 
 // get methods
 router.get('/', async (req, res) => {
@@ -23,7 +24,7 @@ router.get('/:id', async (req, res) => {
 
 // post method
 router.post('/', async (req, res) => {
-  const { valid, message } = validate(req.body)
+  const { valid, message } = customerValidate(req.body)
   if (!valid) return res.status(400).send(message)
 
   const customer = new Customer({
@@ -40,7 +41,7 @@ router.post('/', async (req, res) => {
 
 // put method
 router.put('/:id', async (req, res) => {
-  const { valid, message } = validate(req.body)
+  const { valid, message } = customerValidate(req.body)
   if (!valid) return res.status(400).send(message)
 
   await Customer.findByIdAndUpdate(req.params.id, req.body)

@@ -3,7 +3,7 @@ const router = express.Router()
 const config = require('config')
 
 // other misc imports
-const { Genre, validate } = require(config.get('path') + '/models/genres')
+const { Genre, genreValidate } = require(config.get('path') + '/models/genres')
 
 // get methods
 router.get('/', async (req, res) => {
@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
 
 // post methods
 router.post('/', async (req, res) => {
-  const { valid, message } = validate(req.body)
+  const { valid, message } = genreValidate(req.body)
   if (!valid) return res.status(400).send(message)
 
   const genre = new Genre({
@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
 
 // put methods
 router.put('/:id', async (req, res) => {
-  const { valid, message } = validate(req.body)
+  const { valid, message } = genreValidate(req.body)
   if (!valid) return res.status(400).send(message)
 
   await Genre.findByIdAndUpdate(req.params.id, { name: req.body.name })
