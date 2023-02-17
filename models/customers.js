@@ -1,31 +1,30 @@
 const mongoose = require('mongoose')
 const Joi = require('joi')
 
-const Customer = new mongoose.model(
-  'Customer',
-  new mongoose.Schema({
-    isGold: {
-      type: Boolean,
-      default: false,
-    },
+const customerSchema = new mongoose.Schema({
+  isGold: {
+    type: Boolean,
+    default: false,
+  },
 
-    name: {
-      type: String,
-      required: true,
-      minLength: 3,
-      maxLength: 30,
-    },
+  name: {
+    type: String,
+    required: true,
+    minLength: 3,
+    maxLength: 30,
+  },
 
-    phone: {
-      type: String,
-      required: true,
-      match: /^09.*/,
-    },
-  })
-)
+  phone: {
+    type: String,
+    required: true,
+    match: /^09.*/,
+  },
+})
+
+const Customer = new mongoose.model('Customer', customerSchema)
 
 // validation
-function checkCustomerSchema(customer) {
+function customerValidate(customer) {
   const schema = Joi.object({
     isGold: Joi.boolean(),
     name: Joi.string().required().min(3).max(30),
@@ -41,4 +40,5 @@ function checkCustomerSchema(customer) {
 }
 
 exports.Customer = Customer
-exports.validate = checkCustomerSchema
+exports.customerSchema = customerSchema
+exports.customervalidate = customerValidate
