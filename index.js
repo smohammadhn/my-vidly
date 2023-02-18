@@ -24,7 +24,11 @@ mongoose.set('returnOriginal', false)
 mongoose
   .connect('mongodb://localhost/vidly')
   .then(() => console.log('Success: connected to vidly database'))
-  .catch(() => console.log('Failed: connection to vidly database'))
+  .catch(() =>
+    console.log(
+      'Failed: connection to vidly database. Did you forget to run mongod command?'
+    )
+  )
 
 // other useful packages:
 // HELMET: adds additional headers to api headers (best-practice)
