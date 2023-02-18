@@ -35,10 +35,7 @@ router.post('/', async (req, res) => {
 
   await Movie.create({
     title: req.body.title,
-    genre: {
-      _id: genre._id,
-      name: genre.name,
-    },
+    genre: genre.name,
     numberInStock: req.body.numberInStock,
     dailyRentalRate: req.body.dailyRentalRate,
   })
