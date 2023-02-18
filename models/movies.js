@@ -2,8 +2,7 @@ const Joi = require('joi')
 const mongoose = require('mongoose')
 const config = require('config')
 
-const { genreSchema, genreValidate } = require(config.get('path') +
-  '/models/genres')
+const { genreSchema } = require(config.get('path') + '/models/genres')
 
 const movieSchema = new mongoose.Schema({
   title: {
@@ -44,16 +43,8 @@ function movieValidate(movie) {
     genreId: Joi.string().required(),
   })
 
-  // first, validate genre before validating entire movie object
-  const validateGenre = genreValidate(movie.genre)
-  if (!validateGenre.valid)
-    return {
-      valid: validateGenre.valid,
-      message: 'Genre object: ' + validateGenre.message,
-    }
-
-  // second, validate movie object
   const { error } = schema.validate(movie)
+
   return {
     valid: error == null,
     message: error ? error.details[0].message : null,
