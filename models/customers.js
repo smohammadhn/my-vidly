@@ -41,4 +41,4 @@ function customerValidate(customer) {
 
 exports.Customer = Customer
 exports.customerSchema = customerSchema
-exports.customervalidate = customerValidate
+exports.customerValidate = customerValidate
