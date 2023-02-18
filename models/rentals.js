@@ -36,8 +36,12 @@ const Rental = mongoose.model('Rental', rentalSchema)
 
 function rentalValidate(rental) {
   const schema = Joi.object({
-    movieId: Joi.string().required(),
-    customerId: Joi.string().required(),
+    movieId: Joi.string()
+      .required()
+      .regex(/^[0-9a-fA-F]{24}$/, 'object Id'),
+    customerId: Joi.string()
+      .required()
+      .regex(/^[0-9a-fA-F]{24}$/, 'object Id'),
   })
 
   const { error } = schema.validate(rental)

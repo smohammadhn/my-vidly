@@ -40,7 +40,9 @@ function movieValidate(movie) {
     title: Joi.string().min(3).max(255).required(),
     numberInStock: Joi.number().default(0).min(0).max(255),
     dailyRentalRate: Joi.number().default(0).min(0).max(255),
-    genreId: Joi.string().required(),
+    genreId: Joi.string()
+      .required()
+      .regex(/^[0-9a-fA-F]{24}$/, 'object Id'),
   })
 
   const { error } = schema.validate(movie)
