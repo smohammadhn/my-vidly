@@ -4,6 +4,7 @@ const config = require('config')
 const _ = require('lodash')
 const bcrypt = require('bcrypt')
 const auth = require(config.get('path') + '/middlewares/auth')
+const admin = require(config.get('path') + '/middlewares/admin')
 
 // other misc imports
 const { User, userValidate } = require(config.get('path') + '/models/users')
@@ -30,7 +31,7 @@ router.post('/', auth, async (req, res) => {
 })
 
 // delete route
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
   await User.findByIdAndRemove(req.params.id)
     .then((foundUser) => {
       if (!foundUser)

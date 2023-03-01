@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const config = require('config')
 const auth = require(config.get('path') + '/middlewares/auth')
+const admin = require(config.get('path') + '/middlewares/admin')
 const { Genre, genreValidate } = require(config.get('path') + '/models/genres')
 
 // get methods
@@ -54,7 +55,7 @@ router.put('/:id', auth, async (req, res) => {
 })
 
 // delete methods
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
   await Genre.findByIdAndRemove(req.params.id)
     .then((genre) => {
       if (!genre)
