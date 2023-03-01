@@ -1,4 +1,4 @@
 {
-  "secretToken": "SECRET_TOKEN",
-  "port": "PORT"
+  "port": "PORT",
+  "jwtSecret": "JWT_SECRET"
 }
