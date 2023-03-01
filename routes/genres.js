@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const config = require('config')
-
-// other misc imports
+const auth = require(config.get('path') + '/middlewares/auth')
 const { Genre, genreValidate } = require(config.get('path') + '/models/genres')
 
 // get methods
@@ -26,7 +25,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // post methods
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { valid, message } = genreValidate(req.body)
   if (!valid) return res.status(400).send(message)
 
@@ -36,14 +35,12 @@ router.post('/', async (req, res) => {
 
   await genre
     .save()
-    .then((genre) => {
-      res.send(genre)
-    })
+    .then((genre) => res.send(genre))
     .catch((err) => res.status(500).send(err.message))
 })
 
 // put methods
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   const { valid, message } = genreValidate(req.body)
   if (!valid) return res.status(400).send(message)
 
@@ -57,7 +54,7 @@ router.put('/:id', async (req, res) => {
 })
 
 // delete methods
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   await Genre.findByIdAndRemove(req.params.id)
     .then((genre) => {
       if (!genre)

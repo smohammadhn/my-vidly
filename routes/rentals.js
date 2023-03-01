@@ -2,6 +2,7 @@
 const express = require('express')
 const router = express.Router()
 const config = require('config')
+const auth = require(config.get('path') + '/middlewares/auth')
 const { Rental, rentalValidate } = require(config.get('path') +
   '/models/rentals')
 const { Customer } = require(config.get('path') + '/models/customers')
@@ -25,7 +26,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // post method
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { valid, message } = rentalValidate(req.body)
   if (!valid) return res.status(400).send(message)
 

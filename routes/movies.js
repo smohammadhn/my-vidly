@@ -2,9 +2,9 @@
 const express = require('express')
 const router = express.Router()
 const config = require('config')
-
+const auth = require(config.get('path') + '/middlewares/auth')
 const { Movie, movieValidate } = require(config.get('path') + '/models/movies')
-const { Genre } = require('../models/genres')
+const { Genre } = require(config.get('path') + '/models/genres')
 
 // get methods
 router.get('/', async (req, res) => {
@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // post method
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { valid, message } = movieValidate(req.body)
   if (!valid) return res.status(400).send(message)
 
@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
 })
 
 // put method
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   const { valid, message } = movieValidate(req.body)
   if (!valid) return res.status(400).send(message)
 
@@ -72,7 +72,7 @@ router.put('/:id', async (req, res) => {
 })
 
 // delete method
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   await Movie.findByIdAndRemove(req.params.id)
     .then((deletedMovie) => {
       if (!deletedMovie)

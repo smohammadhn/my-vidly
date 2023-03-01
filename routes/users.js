@@ -3,12 +3,13 @@ const router = express.Router()
 const config = require('config')
 const _ = require('lodash')
 const bcrypt = require('bcrypt')
+const auth = require(config.get('path') + '/middlewares/auth')
 
 // other misc imports
 const { User, userValidate } = require(config.get('path') + '/models/users')
 
 // post methods
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { valid, message } = userValidate(req.body)
   if (!valid) return res.status(400).send(message)
 
@@ -29,7 +30,7 @@ router.post('/', async (req, res) => {
 })
 
 // delete route
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   await User.findByIdAndRemove(req.params.id)
     .then((foundUser) => {
       if (!foundUser)
