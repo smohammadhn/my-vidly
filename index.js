@@ -30,7 +30,10 @@ mongoose
     )
   )
 
-// other useful packages:
+// other useful middlewares:
+// EXPRESS ASYNC ERRORS: monkey patches all route handlers inside a function with a try catch block
+require('express-async-errors')
+
 // HELMET: adds additional headers to api headers (best-practice)
 const helmet = require('helmet')
 app.use(helmet())
@@ -45,6 +48,7 @@ const { resolve } = require('path')
 config.path = resolve()
 
 // other misc imports
+const error = require(config.get('path') + '/middlewares/error')
 const { checkEnvironmentVariables } = require(config.get('path') +
   '/helpers/validators')
 
@@ -71,6 +75,9 @@ routes.forEach((routeName) => {
 
   app.use(endPoint, routeMiddlewarePath)
 })
+
+// global error handler (works in combination with express-async-errors)
+app.use(error)
 
 // -------------------------------- END: api endpoints --------------------------------
 
