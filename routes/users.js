@@ -27,19 +27,16 @@ router.post('/', auth, async (req, res) => {
     .then((createdUser) =>
       res.send(_.pick(createdUser, ['name', 'email', '_id']))
     )
-    .catch((err) => res.status(500).send(err.message))
 })
 
 // delete route
 router.delete('/:id', [auth, admin], async (req, res) => {
-  await User.findByIdAndRemove(req.params.id)
-    .then((foundUser) => {
-      if (!foundUser)
-        return res.status(404).send('User with the given id not exists')
+  await User.findByIdAndRemove(req.params.id).then((foundUser) => {
+    if (!foundUser)
+      return res.status(404).send('User with the given id not exists')
 
-      res.send(_.pick(foundUser, ['name', 'email', '_id']))
-    })
-    .catch((err) => res.status(500).send(err.message))
+    res.send(_.pick(foundUser, ['name', 'email', '_id']))
+  })
 })
 
 module.exports = router

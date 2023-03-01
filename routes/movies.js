@@ -14,13 +14,10 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-  await Movie.findById(req.params.id)
-    .then((foundMovie) => {
-      if (!foundMovie)
-        res.status(404).send('Movie with the given id not found!')
-      else res.send(foundMovie)
-    })
-    .catch((err) => res.status(500).send(err.message))
+  await Movie.findById(req.params.id).then((foundMovie) => {
+    if (!foundMovie) res.status(404).send('Movie with the given id not found!')
+    else res.send(foundMovie)
+  })
 })
 
 // post method
@@ -39,9 +36,7 @@ router.post('/', auth, async (req, res) => {
     genre: genre.name,
     numberInStock: req.body.numberInStock,
     dailyRentalRate: req.body.dailyRentalRate,
-  })
-    .then((createdMovie) => res.send(createdMovie))
-    .catch((err) => res.status(500).send(err.message))
+  }).then((createdMovie) => res.send(createdMovie))
 })
 
 // put method
@@ -63,24 +58,20 @@ router.put('/:id', auth, async (req, res) => {
     },
     numberInStock: req.body.numberInStock,
     dailyRentalRate: req.body.dailyRentalRate,
+  }).then((updatedMovie) => {
+    if (!updatedMovie)
+      res.status(404).send('Movie with the given id not found!')
+    else res.send(updatedMovie)
   })
-    .then((updatedMovie) => {
-      if (!updatedMovie)
-        res.status(404).send('Movie with the given id not found!')
-      else res.send(updatedMovie)
-    })
-    .catch((err) => res.status(500).send(err.message))
 })
 
 // delete method
 router.delete('/:id', [auth, admin], async (req, res) => {
-  await Movie.findByIdAndRemove(req.params.id)
-    .then((deletedMovie) => {
-      if (!deletedMovie)
-        res.status(404).send('Movie with the given id not found!')
-      else res.send(deletedMovie)
-    })
-    .catch((err) => res.status(500).send(err.message))
+  await Movie.findByIdAndRemove(req.params.id).then((deletedMovie) => {
+    if (!deletedMovie)
+      res.status(404).send('Movie with the given id not found!')
+    else res.send(deletedMovie)
+  })
 })
 
 module.exports = router
