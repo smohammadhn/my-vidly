@@ -52,7 +52,15 @@ const { checkEnvironmentVariables } = require(config.get('path') +
 
 // -------------------------------- START: api endpoints --------------------------------
 
-const routes = ['home', 'genres', 'customers', 'movies', 'rentals', 'users']
+const routes = [
+  'home',
+  'genres',
+  'customers',
+  'movies',
+  'rentals',
+  'users',
+  'login',
+]
 
 routes.forEach((routeName) => {
   const routeMiddlewarePath = require(config.get('path') +
