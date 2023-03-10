@@ -59,38 +59,11 @@ const { resolve } = require('path')
 config.path = resolve()
 
 // other misc imports
-const error = require(config.get('path') + '/middlewares/error')
+require(config.get('path') + '/startup/routes')(app)
 const { checkEnvironmentVariables } = require(config.get('path') +
   '/helpers/validators')
 
 // -------------------------------- END: imports --------------------------------
-
-// -------------------------------- START: api endpoints --------------------------------
-
-const routes = [
-  'home',
-  'genres',
-  'customers',
-  'movies',
-  'rentals',
-  'users',
-  'login',
-]
-
-routes.forEach((routeName) => {
-  const routeMiddlewarePath = require(config.get('path') +
-    `/routes/${routeName}.js`)
-
-  let endPoint = `/api/${routeName}`
-  if (routeName === 'home') endPoint = '/'
-
-  app.use(endPoint, routeMiddlewarePath)
-})
-
-// global error handler (works in combination with express-async-errors)
-app.use(error)
-
-// -------------------------------- END: api endpoints --------------------------------
 
 // -------------------------------- START: application main program --------------------------------
 
