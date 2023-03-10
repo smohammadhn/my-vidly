@@ -2,7 +2,10 @@
 // it will automatically trigger if any kind of error happens inside route handlers
 // (as a result of 'express-async-errors' package)
 
+const winston = require('winston')
+
 module.exports = function (err, req, res, next) {
+  winston.error({ timeStamp: new Date(), body: err.message })
   res.status(500).send('Something is wrong on the server:>> ' + err)
 
   // This mutherfucker took 2 hours of my life, do not delete it

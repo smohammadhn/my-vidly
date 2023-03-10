@@ -34,6 +34,10 @@ mongoose
 // EXPRESS ASYNC ERRORS: monkey patches all route handlers inside a function with a try catch block
 require('express-async-errors')
 
+// WINSTON: error logger
+const winston = require('winston')
+winston.add(new winston.transports.File({ filename: 'logfile.log' }))
+
 // HELMET: adds additional headers to api headers (best-practice)
 const helmet = require('helmet')
 app.use(helmet())
