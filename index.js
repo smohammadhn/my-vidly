@@ -1,5 +1,3 @@
-// -------------------------------- START: imports --------------------------------
-
 // enable usage of .env file for environment variables
 require('dotenv').config({ path: __dirname + '/.env' })
 
@@ -17,8 +15,6 @@ app.use(express.json())
 // URLENCODED: parses incoming requests with urlencoded payloads and is based on body-parser (eg. requests using html forms)
 app.use(express.urlencoded({ extended: true }))
 
-// other useful middlewares:
-
 // HELMET: adds additional headers to api headers (best-practice)
 const helmet = require('helmet')
 app.use(helmet())
@@ -32,20 +28,11 @@ const config = require('config')
 const { resolve } = require('path')
 config.path = resolve()
 
-// other misc imports
+// startup files imports
 require(config.get('path') + '/startup/logging')()
+require(config.get('path') + '/startup/config')()
 require(config.get('path') + '/startup/routes')(app)
 require(config.get('path') + '/startup/db')()
-const { checkEnvironmentVariables } = require(config.get('path') +
-  '/helpers/validators')
-
-// -------------------------------- END: imports --------------------------------
-
-// -------------------------------- START: application main program --------------------------------
-
-checkEnvironmentVariables()
 
 const port = config.get('port')
 app.listen(port, () => console.log(`Listening on port ${port} ...`))
-
-// -------------------------------- END: application main program --------------------------------
