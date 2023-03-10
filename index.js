@@ -29,11 +29,10 @@ const { resolve } = require('path')
 config.path = resolve()
 
 // startup files imports
-require(config.get('path') + '/startup/logging')
-
+const logger = require(config.get('path') + '/startup/logging')
 require(config.get('path') + '/startup/config')()
 require(config.get('path') + '/startup/routes')(app)
 require(config.get('path') + '/startup/db')()
 
 const port = config.get('port')
-app.listen(port, () => console.log(`Listening on port ${port} ...`))
+app.listen(port, () => logger.info(`Listening on port ${port} ...`))
