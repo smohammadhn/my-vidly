@@ -36,7 +36,14 @@ require('express-async-errors')
 
 // WINSTON: error logger
 const winston = require('winston')
+require('winston-mongodb')
 winston.add(new winston.transports.File({ filename: 'logfile.log' }))
+winston.add(
+  new winston.transports.MongoDB({
+    db: 'mongodb://localhost/vidly',
+    level: 'error',
+  })
+)
 
 // HELMET: adds additional headers to api headers (best-practice)
 const helmet = require('helmet')

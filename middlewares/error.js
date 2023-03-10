@@ -5,7 +5,7 @@
 const winston = require('winston')
 
 module.exports = function (err, req, res, next) {
-  winston.error({ timeStamp: new Date(), body: err.message })
+  winston.error(err.message, err)
   res.status(500).send('Something is wrong on the server:>> ' + err)
 
   // This mutherfucker took 2 hours of my life, do not delete it

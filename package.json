@@ -21,7 +21,8 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.9.1",
     "morgan": "^1.10.0",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "winston-mongodb": "^5.1.1"
   },
   "devDependencies": {
     "eslint": "^8.33.0",
