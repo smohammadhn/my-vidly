@@ -17,33 +17,32 @@ app.use(express.json())
 // URLENCODED: parses incoming requests with urlencoded payloads and is based on body-parser (eg. requests using html forms)
 app.use(express.urlencoded({ extended: true }))
 
-// initialize mongoose
-const mongoose = require('mongoose')
-mongoose.set('strictQuery', false)
-mongoose.set('returnOriginal', false)
-mongoose
-  .connect('mongodb://localhost/vidly')
-  .then(() => console.log('Success: connected to vidly database'))
-  .catch(() =>
-    console.log(
-      'Failed: connection to vidly database. Did you forget to run mongod command?'
-    )
-  )
-
 // other useful middlewares:
 // EXPRESS ASYNC ERRORS: monkey patches all route handlers inside a function with a try catch block
 require('express-async-errors')
 
 // WINSTON: error logger
 const winston = require('winston')
-require('winston-mongodb')
+
+process.on('unhandledRejection', (ex) => {
+  throw ex
+})
+
+// require('winston-mongodb')
 winston.add(new winston.transports.File({ filename: 'logfile.log' }))
 winston.add(
-  new winston.transports.MongoDB({
-    db: 'mongodb://localhost/vidly',
-    level: 'error',
+  new winston.transports.File({
+    filename: 'uncaughtExceptions.log',
+    handleExceptions: true,
+    handleRejections: true,
   })
 )
+// winston.add(
+//   new winston.transports.MongoDB({
+//     db: 'mongodb://localhost/vidly',
+//     level: 'error',
+//   })
+// )
 
 // HELMET: adds additional headers to api headers (best-practice)
 const helmet = require('helmet')
@@ -60,6 +59,7 @@ config.path = resolve()
 
 // other misc imports
 require(config.get('path') + '/startup/routes')(app)
+require(config.get('path') + '/startup/db')()
 const { checkEnvironmentVariables } = require(config.get('path') +
   '/helpers/validators')
 
