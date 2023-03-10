@@ -29,7 +29,8 @@ const { resolve } = require('path')
 config.path = resolve()
 
 // startup files imports
-require(config.get('path') + '/startup/logging')()
+require(config.get('path') + '/startup/logging')
+
 require(config.get('path') + '/startup/config')()
 require(config.get('path') + '/startup/routes')(app)
 require(config.get('path') + '/startup/db')()

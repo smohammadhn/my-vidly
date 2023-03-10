@@ -1,4 +1,5 @@
-const winston = require('winston')
+const config = require('config')
+const logger = require(config.get('path') + '/startup/logging')
 
 module.exports = function () {
   // check environment variables
@@ -6,7 +7,7 @@ module.exports = function () {
 
   requiredEnvVars.forEach((envKey) => {
     if (!process.env[envKey])
-      winston.error(
+      logger.error(
         `${envKey} environment variable not found, Have you forgotten to set your environment variables?`
       )
   })

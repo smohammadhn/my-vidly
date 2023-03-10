@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const winston = require('winston')
+const config = require('config')
+const logger = require(config.get('path') + '/startup/logging')
 
 module.exports = function () {
   mongoose.set('strictQuery', false)
@@ -7,5 +8,5 @@ module.exports = function () {
 
   mongoose
     .connect('mongodb://localhost/vidly')
-    .then(() => winston.info('Success: connected to vidly database'))
+    .then(() => logger.info('Success: connected to vidly database'))
 }
