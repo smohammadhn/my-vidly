@@ -1,5 +1,6 @@
 {
   "name": "my-vidly-test",
   "jwtSecret": "1234",
-  "db": "mongodb://localhost/vidly_tests"
+  "db": "mongodb://localhost/vidly_tests",
+  "port": "8000"
 }
