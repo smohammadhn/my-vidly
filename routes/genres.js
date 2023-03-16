@@ -4,6 +4,8 @@ const config = require('config')
 const auth = require(config.get('path') + '/middlewares/auth')
 const admin = require(config.get('path') + '/middlewares/admin')
 const { Genre, genreValidate } = require(config.get('path') + '/models/genres')
+const validateObjectId = require(config.get('path') +
+  '/middlewares/validateObjectId')
 
 // get methods
 router.get('/', async (req, res) => {
@@ -14,7 +16,7 @@ router.get('/', async (req, res) => {
     })
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', validateObjectId, async (req, res) => {
   await Genre.findById(req.params.id).then((genre) => {
     if (!genre) res.status(404).send('Genre with the given id does not exist.')
     else res.send(genre)
