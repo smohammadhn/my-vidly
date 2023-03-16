@@ -13,7 +13,6 @@ describe('user.generateAuthToken', () => {
     const token = user.generateAuthToken()
 
     const decoded = jwt.verify(token, config.get('jwtSecret'))
-    console.log(config.get('jwtSecret'))
     expect(decoded).toMatchObject(payload)
   })
 })

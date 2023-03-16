@@ -35,4 +35,8 @@ require(config.get('path') + '/startup/routes')(app)
 require(config.get('path') + '/startup/db')()
 
 const port = config.get('port')
-app.listen(port, () => logger.info(`Listening on port ${port} ...`))
+const server = app.listen(port, () =>
+  logger.info(`Listening on port ${port} ...`)
+)
+
+module.exports = server

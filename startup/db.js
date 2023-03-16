@@ -7,6 +7,11 @@ module.exports = function () {
   mongoose.set('returnOriginal', false)
 
   mongoose
-    .connect('mongodb://localhost/vidly')
-    .then(() => logger.info('Success: connected to vidly database'))
+    .connect(config.get('db'), {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() =>
+      logger.info(`Success: connected to ${config.get('db')} database`)
+    )
 }

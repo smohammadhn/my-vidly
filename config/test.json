@@ -1,4 +1,5 @@
 {
   "name": "my-vidly-test",
-  "jwtSecret": "1234"
+  "jwtSecret": "1234",
+  "db": "mongodb://localhost/vidly_tests"
 }
